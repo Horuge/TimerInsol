@@ -1,33 +1,52 @@
 /*
- * Cronómetro para insoladora.
- * 
- * Material:
- *    Arduino Pro Mini. (Cualquier Arduino configurando los pines).
- *    3 botones
- *    1 relé
- *    TM1637
- *    (Fuente de alimentación externa)
- * 
- * Configuración para Arduino Pro / Pro Mini
- * Pines:
- * boton set: 4
- * botón mode: 5
- * botón: start/pausa: 6
- * Salida al relé: 8
- * Configuracion diplay 7 segmentos TM1637:
- *  CLK 2
- *  DIO 3
- *  
- * Funcionamiento general:
- *  Al iniciar el programa carga tiempo establecido en memoria EEPROM.
- *  Es posible modificar el tiempo con una pulsación large de SET ( más de un segundo). Se pasará a metodo edición. 
- *  El digito a editar parpadeará. Las decenas de minuto tienen un valor entre 0 y 2. Para modificar el valor del digito
- *  elegido se utiliza el botón MODE. Para alternar entre dígitos hay que pulsar SET. Para abandonar este modo hay que hacer
- *  una pulsación larga de SET.
- *  Fuera del modo edición, el anterior el triple click de SET guardará el valor del display en la EEPROM.
- *  Para iniciar el temporizador se ha de pulsar botón START/PAUSA. Una vez iniciado este botón pausa el cronómetro.
- *  El botón MODE reinicia el contador. Esta funcionalidad se da aunque este en pausa.
- *  
+    Cronómetro para insoladora.
+    
+    Author     : Jorge Solís
+    Create Time: 27/09/2020
+    
+    Material:
+       Arduino Pro Mini. (Cualquier Arduino configurando los pines).
+       3 botones
+       1 relé
+       TM1637
+       (Fuente de alimentación externa)
+    
+    Configuración para Arduino Pro / Pro Mini
+    Pines:
+    boton set: 4
+    botón mode: 5
+    botón: start/pausa: 6
+    Salida al relé: 8
+    Configuracion diplay 7 segmentos TM1637:
+     CLK 2
+     DIO 3
+     
+    Funcionamiento general:
+     Al iniciar el programa carga tiempo establecido en memoria EEPROM.
+     Es posible modificar el tiempo con una pulsación large de SET ( más de un segundo). Se pasará a metodo edición. 
+     El digito a editar parpadeará. Las decenas de minuto tienen un valor entre 0 y 2. Para modificar el valor del digito
+     elegido se utiliza el botón MODE. Para alternar entre dígitos hay que pulsar SET. Para abandonar este modo hay que hacer
+     una pulsación larga de SET.
+     Fuera del modo edición, el anterior el triple click de SET guardará el valor del display en la EEPROM.
+     Para iniciar el temporizador se ha de pulsar botón START/PAUSA. Una vez iniciado este botón pausa el cronómetro.-
+     El botón MODE reinicia el contador. Esta funcionalidad se da aunque este en pausa.
+     
+    The MIT License (MIT)
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
  */
 #include <TimerOne.h>
 #include "TM1637.h"
@@ -42,7 +61,7 @@
 #define BUTTON_START_PIN  6
 #define RELE 8
 
-#define CLK 2 //pins definitions for TM1637 and can be changed to other ports
+#define CLK 2 //pins definitions para TM1637
 #define DIO 3
 
 #define ZERO 0
@@ -84,7 +103,7 @@ void setup()
   Timer1.initialize(500000);//timing for 500ms
   Timer1.attachInterrupt(TimingISR);//declare the interrupt serve routine:TimingISR
 
-  // Declaración de los tipos de pusado en los botones.
+  // Declaración de los tipos de pulsado en los botones.
   setButton.setClickHandler(handlerBtn);
   setButton.setLongClickHandler(handlerBtn);
   setButton.setTripleClickHandler(handlerBtn);
@@ -102,6 +121,7 @@ void setup()
 
   // Activa los puntos del display
   tm1637.point(POINT_ON);
+  delay(50);
 }
 
 
@@ -135,7 +155,6 @@ void loop()
 
   // setDisplayTime();
   tm1637.display(TimeDisp);
-  delay(100);
 }
 
 /*
