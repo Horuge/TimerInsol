@@ -76,7 +76,9 @@
 
 #define ADDRESS ZERO
 
+// Array para mostrar con valores a mostrar en display.
 int8_t TimeDisp[] = {0x00,0x00,0x00,0x00};
+// Dos puntos del display del tiempo.
 unsigned char ClockPoint = UNO;
 unsigned char Update;
 unsigned char halfsecond = ZERO;
@@ -88,8 +90,10 @@ bool started = false;
 bool setting = false;
 int settingIndex = ZERO;
 
+// Objeto TM1637
 TM1637 tm1637(CLK,DIO);
 
+// Inicializa objetos botones.
 Button2 setButton = Button2(BUTTON_SET_PIN);
 Button2 modeButton = Button2(BUTTON_MODE_PIN);
 Button2 startButton = Button2(BUTTON_START_PIN);
@@ -100,8 +104,9 @@ void setup()
 
   tm1637.set();
   tm1637.init();
-  Timer1.initialize(500000);//timing for 500ms
-  Timer1.attachInterrupt(TimingISR);//declare the interrupt serve routine:TimingISR
+  
+  Timer1.initialize(500000);//timing para 500ms
+  Timer1.attachInterrupt(TimingISR);// declara rutina de interrupción: TimingISR
 
   // Declaración de los tipos de pulsado en los botones.
   setButton.setClickHandler(handlerBtn);
@@ -121,14 +126,13 @@ void setup()
 
   // Activa los puntos del display
   tm1637.point(POINT_ON);
-  delay(50);
 }
 
 
 
 void loop()
 {
-  // inicializar botones
+  // Activa botones. comprueban que se han pulsado.
   setButton.loop();
   modeButton.loop();
   startButton.loop();
