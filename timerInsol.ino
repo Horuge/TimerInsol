@@ -79,8 +79,8 @@
 // Array para mostrar con valores a mostrar en display.
 int8_t TimeDisp[] = {0x00,0x00,0x00,0x00};
 // Dos puntos del display del tiempo.
-unsigned char ClockPoint = UNO;
-unsigned char Update;
+unsigned char clockPoint = UNO;
+unsigned char update;
 unsigned char halfsecond = ZERO;
 unsigned char second;
 unsigned char minute;
@@ -106,7 +106,7 @@ void setup()
   tm1637.init();
   
   Timer1.initialize(500000);//timing para 500ms
-  Timer1.attachInterrupt(TimingISR);// declara rutina de interrupción: TimingISR
+  Timer1.attachInterrupt(timingISR);// declara rutina de interrupción: TimingISR
 
   // Declaración de los tipos de pulsado en los botones.
   setButton.setClickHandler(handlerBtn);
@@ -145,8 +145,8 @@ void loop()
   
   // Cuenta atras.
   if(started && !stop) {
-    if(Update == ON) {
-      TimeUpdate();
+    if(update == ON) {
+      timeUpdate();
       setDisplayTime();
       if(!stop) {
           digitalWrite(RELE, LOW);
@@ -163,14 +163,14 @@ void loop()
 */
 
 // Funcion de la interrupcion del timer. Cuenta medio segundo.
-void TimingISR()
+void timingISR()
 {
   halfsecond ++;
-  Update = ON;
+  update = ON;
   if(halfsecond == 2){
     halfsecond = 0;
   }
-  ClockPoint = (~ClockPoint) & 0x01;
+  clockPoint = (~clockPoint) & 0x01;
 }
 
 // función para cambiar el tiempo del contador.
@@ -208,9 +208,9 @@ void setupUpdate() {
 }
 
 // Actualización del contador.
-void TimeUpdate(void)
+void timeUpdate(void)
 {
-  if(ClockPoint) tm1637.point(POINT_ON);
+  if(clockPoint) tm1637.point(POINT_ON);
   else tm1637.point(POINT_OFF);
 
   if(halfsecond == ZERO) {
@@ -226,7 +226,7 @@ void TimeUpdate(void)
     }
     halfsecond = ZERO;
   }
-  Update = OFF;
+  update = OFF;
 }
 
 // Manejo de acciones de los botones.
