@@ -153,11 +153,8 @@ void loop()
         } else {
           digitalWrite(RELE, HIGH);
         }
-      // tm1637.display(TimeDisp);
     }
   }
-
-  // setDisplayTime();
   tm1637.display(TimeDisp);
 }
 
@@ -173,7 +170,6 @@ void TimingISR()
   if(halfsecond == 2){
     halfsecond = 0;
   }
- // Serial.println(second);
   ClockPoint = (~ClockPoint) & 0x01;
 }
 
