@@ -155,7 +155,9 @@ void loop()
         }
     }
   }
-  tm1637.display(TimeDisp);
+  if(update == ON) {
+    tm1637.display(TimeDisp);
+  }
 }
 
 /*
