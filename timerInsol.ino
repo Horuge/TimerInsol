@@ -234,9 +234,9 @@ void timeUpdate(void)
 // Manejo de acciones de los botones.
 void handlerBtn(Button2& btn) {
   if(btn == setButton) {
-    switch (btn.getClickType()) {
+    switch (btn.getType()) {
       // Sencillo: cambia entre decenas de minuto, minutos, decenas de segundo y segundos.
-      case SINGLE_CLICK:
+      case single_click:
         if(setting) {
           Serial.println("simple setting. Cambia entre unidadess");
           // Seteo de display para limpiar 0xFF
@@ -249,7 +249,7 @@ void handlerBtn(Button2& btn) {
         }
         break;
       // Largo: Si estamos en el modo setting salir, si no activa el modo setting.
-      case LONG_CLICK:
+      case long_click:
         // Si esta activo setting salir si no esta activar
         setting = !setting;
         // Seteo de display para limpiar 0xFF
@@ -258,7 +258,7 @@ void handlerBtn(Button2& btn) {
         Serial.println("long setting. Activar desactivar setting");
         break;
       // Triple click: Guarda el tiempo en la EEPROM
-      case TRIPLE_CLICK:
+      case triple_click:
         // Guarda en EEPROM tiempo
         if(setting == false && started == false) {
           for(int i = ZERO; i < 4; i++) {
@@ -273,13 +273,13 @@ void handlerBtn(Button2& btn) {
     }
   } else if(btn == modeButton) {
       // En modo setting modifica el valor de cronometro.
-      if(btn.getClickType() == SINGLE_CLICK && setting == true) {
+      if(btn.getType() == single_click && setting == true) {
         Serial.println("mode setting modifica el valor de cronometro");
         // modificar contador
         setTimer(settingIndex);
       }
       // reinicia el contador con el valor de la EEPROM.
-      if(btn.getClickType() == SINGLE_CLICK && stop == true && started == true) {
+      if(btn.getType() == single_click && stop == true && started == true) {
         // reiniciar el contador
         Serial.println("reinicia el contador con el valor de la EEPROM");
         stop = false;
@@ -291,7 +291,7 @@ void handlerBtn(Button2& btn) {
       }
   } else if(btn == startButton) {
     // Empieza el contador
-    if(btn.getClickType() == SINGLE_CLICK) {
+    if(btn.getType() == single_click) {
       if(started == false && setting == false) {
       Serial.println("Empieza contador");
       started = true;
